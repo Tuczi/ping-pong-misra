@@ -14,7 +14,7 @@ inline bool link_fails_simulation(int tag, MPI::Comm &comm) {
     static std::default_random_engine generator;
     static std::normal_distribution<float> distribution(0.0, 1.0);
     auto value = distribution(generator);
-    
+
     return abs(value) > 0.5 && comm.Get_rank() == 4 &&
            tag == PONG_TAG; // simulate link 4->next fail (avoid loose of 2 tokens in one round)
 }
@@ -63,12 +63,12 @@ void register_callbacks(tag_callback_map &map) {
 }
 
 void regenerate(int val, MPI::Comm &comm) {
-    ping = abs(val) % (comm.Get_size() + 1);
+    ping = (abs(val) % comm.Get_size()) + 1;
     pong = -ping;
 }
 
 void incarnate(int val, MPI::Comm &comm) {
-    ping = (abs(val) + 1) % (comm.Get_size() + 1);
+    ping = ((abs(val) + 1) % comm.Get_size()) + 1;
     pong = -ping;
 }
 
