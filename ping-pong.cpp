@@ -68,7 +68,7 @@ void regenerate(int val, MPI::Comm &comm) {
 }
 
 void incarnate(int val, MPI::Comm &comm) {
-    ping = ((abs(val) + 1) % comm.Get_size()) + 1;
+    ping = (abs(val) % comm.Get_size()) + 1;
     pong = -ping;
 }
 
